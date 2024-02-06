@@ -18,7 +18,15 @@ repositories {
     mavenCentral()
 }
 
+val lombok_version = "1.18.30"
+
 dependencies {
+    compileOnly("org.projectlombok:lombok:" + lombok_version)
+    annotationProcessor("org.projectlombok:lombok:" + lombok_version)
+    testCompileOnly("org.projectlombok:lombok:" + lombok_version)
+    testAnnotationProcessor("org.projectlombok:lombok:" + lombok_version)
+
+    implementation("org.apache.commons:commons-lang3:3.0")
     testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 }
