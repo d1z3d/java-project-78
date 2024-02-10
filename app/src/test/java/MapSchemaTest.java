@@ -31,9 +31,9 @@ public class MapSchemaTest {
         human3.put("lastName", "B");
         assertFalse(schema.isValid(human3));
 
-        Map<String,BaseSchema<Number>> numberSchema = new HashMap<>();
+        Map<String, BaseSchema<Number>> numberSchema = new HashMap<>();
         numberSchema.put("age", v.number().positive().required());
-        numberSchema.put("hours", v.number().range(12,18).required().minLength(2));
+        numberSchema.put("hours", v.number().range(12, 18).required().minLength(2));
         schema.shape(numberSchema);
         Map<String, Number> person1 = new HashMap<>();
         person1.put("age", 12);
