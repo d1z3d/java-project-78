@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
+        //System.out.println("Hello world");
         var v = new Validator();
 
         var schema = v.map();
@@ -15,6 +16,7 @@ public class App {
         Map<String, BaseSchema<String>> schemas = new HashMap<>();
         schemas.put("firstName", schS);
         schemas.put("lastName", v.string().required().minLength(2));
+        schema.shape(schemas);
         Map<String, String> human1 = new HashMap<>();
         human1.put("firstName", "John");
         human1.put("lastName", "Smith");
