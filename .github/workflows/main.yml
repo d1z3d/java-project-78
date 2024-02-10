@@ -22,7 +22,6 @@ jobs:
           gradle-version: 8.4
       - name: Build, tests, lint
         run: |
-          chmod +x gradlew
           make build
           make test
           make lint
