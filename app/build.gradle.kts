@@ -34,10 +34,6 @@ tasks.compileJava {
     options.release = 20
 }
 
-tasks.register<Wrapper>("wrapper") {
-    gradleVersion = "8.5"
-}
-
 tasks.test {
     useJUnitPlatform()
     testLogging {
