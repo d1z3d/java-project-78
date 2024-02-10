@@ -6,26 +6,27 @@ public class NumberSchema extends BaseSchema<Number> {
     private long end = Long.MAX_VALUE;
 
     @Override
-    public boolean isValid(Number number) {
+    public boolean isValid(Number object) {
+        boolean isValid = true;
         if (this.isRequired) {
-            if (number == null) {
+            if (object == null) {
                 return false;
             }
             if (this.isPositive) {
-                if (number instanceof Byte) {
-                    return number.byteValue() > 0 && (number.byteValue() >= start && number.byteValue() <= end);
-                } else if (number instanceof Double) {
-                    return number.doubleValue() > 0 && (number.doubleValue() >= start && number.doubleValue() <= end);
-                } else if (number instanceof Float) {
-                    return number.floatValue() > 0 && (number.floatValue() >= start && number.floatValue() <= end);
-                } else if (number instanceof Long) {
-                    return number.longValue() > 0 && (number.longValue() >= start && number.longValue() <= end);
+                if (object instanceof Byte) {
+                    isValid = object.byteValue() > 0 && (object.byteValue() >= start && object.byteValue() <= end);
+                } else if (object instanceof Double) {
+                    isValid = object.doubleValue() > 0 && (object.doubleValue() >= start && object.doubleValue() <= end);
+                } else if (object instanceof Float) {
+                    isValid = object.floatValue() > 0 && (object.floatValue() >= start && object.floatValue() <= end);
+                } else if (object instanceof Long) {
+                    isValid = object.longValue() > 0 && (object.longValue() >= start && object.longValue() <= end);
                 } else {
-                    return number.intValue() > 0 && (number.intValue() >= start && number.intValue() <= end);
+                    isValid = object.intValue() > 0 && (object.intValue() >= start && object.intValue() <= end);
                 }
             }
         }
-        return true;
+        return isValid;
     }
 
     public NumberSchema range(long start, long end) {

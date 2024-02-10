@@ -6,7 +6,7 @@ import lombok.Setter;
 public abstract class BaseSchema<T> {
     protected boolean isRequired = false;
     protected int minLength;
-    public abstract boolean isValid(T value);
+    public abstract boolean isValid(T object);
     public BaseSchema required() {
         this.setRequired(true);
         return this;

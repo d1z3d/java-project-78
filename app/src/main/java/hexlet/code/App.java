@@ -1,26 +1,29 @@
 package hexlet.code;
 
 
+import hexlet.code.schemas.BaseSchema;
+
 import java.util.HashMap;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
-        var validator = new Validator();
-        var schema = validator.map();
-        System.out.println(schema.isValid(null)); // true
+        var v = new Validator();
 
-        schema.required();
+        var schema = v.map();
+        var schS = v.string().required();
+        Map<String, BaseSchema<String>> schemas = new HashMap<>();
+        schemas.put("firstName", schS);
+        schemas.put("lastName", v.string().required().minLength(2));
+        Map<String, String> human1 = new HashMap<>();
+        human1.put("firstName", "John");
+        human1.put("lastName", "Smith");
+        System.out.println(schema.isValid(human1));
+        Map<String, String> human2 = new HashMap<>();
+        human2.put("firstName", "John");
+        human2.put("lastName", null);
+        System.out.println(schema.isValid(human2));
+        //System.out.println(schema.isValid(schemas));
 
-        System.out.println(schema.isValid(null)); // false
-        System.out.println(schema.isValid(new HashMap<>())); // true
-        var data = new HashMap<String, String>();
-        data.put("key1", "value1");
-        System.out.println(schema.isValid(data)); // true
-
-        schema.sizeOf(2);
-
-        System.out.println(schema.isValid(data));  // false
-        data.put("key2", "value2");
-        System.out.println(schema.isValid(data)); // true
     }
 }
