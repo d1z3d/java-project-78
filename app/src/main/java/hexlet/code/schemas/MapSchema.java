@@ -1,7 +1,5 @@
 package hexlet.code.schemas;
 
-import hexlet.code.Validator;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +25,14 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
                     isValid = false;
                 }
             }
+            if (!isValid) {
+                return isValid;
+            }
         }
         return isValid;
     }
 
-    public void shape(Map<?, ? extends BaseSchema> schemas) {
-        this.schemas = new HashMap<>(schemas);
+    public void shape(Map<?, ? extends BaseSchema> schema) {
+        this.schemas = new HashMap<>(schema);
     }
 }
