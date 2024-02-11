@@ -2,23 +2,16 @@ package hexlet.code.schemas;
 
 public class StringSchema extends BaseSchema<String> {
     private String pattern = "";
+
     @Override
     public boolean isValid(String object) {
         boolean isValid = true;
         if (this.isRequired) {
-            if (object == null) {
+            if (object == null || !object.isEmpty()) {
                 return !isValid;
             }
-
-            if (!object.isEmpty()) {
-                isValid = this.minLength <= object.length();
-            } else {
-                isValid = !isValid;
-            }
-
-            if (object.isEmpty() || !object.contains(this.pattern)) {
-                isValid = !isValid;
-            }
+            isValid = this.minLength <= object.length();
+            isValid = !object.contains(this.pattern);
         }
         return isValid;
     }
