@@ -8,11 +8,11 @@ import java.util.Map;
 public class MapSchema extends BaseSchema<Map<?, ?>> {
     private Map<?, ?> schemas = new HashMap<>();
     private boolean hasSize;
-    private int length;
+    private int size;
 
     @Override
     public boolean isValid(Map<?, ?> object) {
-        if (this.hasSize && schemas.size() != length) {
+        if (this.hasSize && schemas.size() != this.size) {
             return false;
         }
         List<Boolean> isValid = new ArrayList<>();
@@ -35,9 +35,9 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
     public void shape(Map<?, ? extends BaseSchema> schema) {
         this.schemas = new HashMap<>(schema);
     }
-    public MapSchema sizeOf(int size) {
+    public MapSchema sizeof(int length) {
         this.hasSize = true;
-        this.length = size;
+        this.size = length;
         return this;
     }
 }
