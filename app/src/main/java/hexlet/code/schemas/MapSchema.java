@@ -1,46 +1,54 @@
 package hexlet.code.schemas;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class MapSchema extends BaseSchema<Map<?, ?>> {
-    private Map<?, ?> schemas = new HashMap<>();
+public class MapSchema extends BaseSchema<Map<String, ?>> {
+    private Map<String, BaseSchema<?>> schemas = new HashMap<>();
     private boolean hasSize;
     private int size;
 
     @Override
-    public boolean isValid(Map<?, ?> object) {
-        if (!this.isRequired) {
-            return true;
+    public boolean isValid(Map<String, ?> object) {
+        for (var schema : schemas.entrySet()) {
+            if (!schema.getValue().isRequired) {
+                return true;
+            }
         }
-        if (object == null) {
-            return false;
-        }
+        return validateSchema(object);
+    }
+
+    @Override
+    public boolean validateSchema(Map<String, ?> data) {
         if (this.hasSize && schemas.size() != this.size) {
             return false;
         }
-        List<Boolean> isValid = new ArrayList<>();
-        object.forEach((key, value) -> {
+        boolean isValid = true;
+        for (var entry: data.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (value == null) {
+                return false;
+            }
             if (schemas.containsKey(key)) {
                 var schema = schemas.get(key);
                 Class<?> base = schema.getClass();
                 if (base.toString().contains("String")) {
-                    isValid.add(((BaseSchema<String>) schema).isValid((String) value));
+                    isValid = ((BaseSchema<String>) schema).isValid((String) value);
                 } else if (base.toString().contains("Number")) {
-                    isValid.add(((BaseSchema<Number>) schema).isValid((Number) value));
+                    isValid = ((BaseSchema<Number>) schema).isValid((Number) value);
                 } else {
-                    isValid.add(false);
+                    return false;
                 }
             }
-        });
-        return !isValid.contains(false);
+        }
+        return isValid;
     }
 
-    public void shape(Map<?, ? extends BaseSchema> schema) {
+    public void shape(Map<String, BaseSchema<?>> schema) {
         this.schemas = new HashMap<>(schema);
     }
+
     public MapSchema sizeof(int length) {
         this.hasSize = true;
         this.size = length;

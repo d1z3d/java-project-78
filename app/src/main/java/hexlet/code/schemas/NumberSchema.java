@@ -8,19 +8,13 @@ public class NumberSchema extends BaseSchema<Number> {
     private boolean hasRange;
 
     @Override
-    public boolean isValid(Number object) {
+    public boolean validateSchema(Number data) {
         boolean isValid = true;
-        if (!this.isRequired) {
-            return isValid;
-        }
-        if (object == null) {
-            return false;
-        }
         if (this.isPositive) {
-            isValid = (object.longValue() <= 0) != isValid;
+            isValid = (data.longValue() <= 0) != isValid;
         }
         if (this.hasRange) {
-            isValid = range.contains(object.longValue());
+            isValid = range.contains(data.longValue());
         }
         return isValid;
     }

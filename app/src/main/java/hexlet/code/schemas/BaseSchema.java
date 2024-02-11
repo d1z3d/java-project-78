@@ -4,9 +4,17 @@ package hexlet.code.schemas;
 public abstract class BaseSchema<T> {
     protected String pattern;
     protected boolean checkContains;
-    protected boolean isRequired = false;
+    protected boolean isRequired;
 
-    public abstract boolean isValid(T object);
+    public boolean isValid(T object) {
+        if (!this.isRequired) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
+        return validateSchema(object);
+    };
 
     public BaseSchema required() {
         this.isRequired = true;
@@ -18,4 +26,5 @@ public abstract class BaseSchema<T> {
         this.checkContains = true;
         return this;
     }
+    public abstract boolean validateSchema(T data);
 }

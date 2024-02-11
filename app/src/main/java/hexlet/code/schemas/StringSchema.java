@@ -5,21 +5,17 @@ public class StringSchema extends BaseSchema<String> {
     private int minLength;
 
     @Override
-    public boolean isValid(String object) {
+    public boolean validateSchema(String data) {
         boolean isValid = true;
-        if (!this.isRequired) {
-            return isValid;
-        }
-        if (object == null || object.isEmpty()) {
+        if (data.isEmpty()) {
             return false;
         }
         if (this.hasMinLength) {
-            isValid = this.minLength <= object.length();
+            isValid = this.minLength <= data.length();
         }
         if (this.checkContains) {
-            isValid = object.contains(this.pattern);
+            isValid = data.contains(this.pattern);
         }
-
         return isValid;
     }
 
