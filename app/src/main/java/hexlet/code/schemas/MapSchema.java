@@ -20,6 +20,9 @@ public class MapSchema extends BaseSchema<Map<String, ?>> {
 
     @Override
     public boolean validateSchema(Map<String, ?> data) {
+        if (data == null) {
+            return false;
+        }
         if (this.hasSize && schemas.size() != this.size) {
             return false;
         }
