@@ -13,7 +13,8 @@ public class MapSchemaTest {
     @Test
     public void isValidTest() {
         var v = new Validator();
-        var schema = v.map().sizeOf(2);
+        var schema = v.map();
+        schema.sizeOf(2);
         Map<String, BaseSchema<String>> stringSchema = new HashMap<>();
         stringSchema.put("firstName", v.string().contains("t").required());
         stringSchema.put("lastName", v.string().minLength(2).required());
