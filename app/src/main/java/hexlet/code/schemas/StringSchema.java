@@ -13,7 +13,7 @@ public class StringSchema extends BaseSchema<String> {
             return isValid;
         }
         if (object == null || object.isEmpty()) {
-            return !isValid;
+            return false;
         }
         if (this.hasMinLength) {
             isValid = this.minLength <= object.length();

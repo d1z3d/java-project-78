@@ -1,6 +1,8 @@
 package hexlet.code.schemas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapSchema extends BaseSchema<Map<?, ?>> {
@@ -8,27 +10,21 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
 
     @Override
     public boolean isValid(Map<?, ?> object) {
-        boolean isValid = true;
-        for (var entry : object.entrySet()) {
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-
+        List<Boolean> isValid = new ArrayList<>();
+        object.forEach((key, value) -> {
             if (schemas.containsKey(key)) {
                 var schema = schemas.get(key);
                 Class<?> base = schema.getClass();
                 if (base.toString().contains("String")) {
-                    isValid = ((BaseSchema<String>) schema).isValid((String) value);
+                    isValid.add(((BaseSchema<String>) schema).isValid((String) value));
                 } else if (base.toString().contains("Number")) {
-                    isValid = ((BaseSchema<Number>) schema).isValid((Number) value);
+                    isValid.add(((BaseSchema<Number>) schema).isValid((Number) value));
                 } else {
-                    isValid = false;
+                    isValid.add(false);
                 }
             }
-            if (!isValid) {
-                return isValid;
-            }
-        }
-        return isValid;
+        });
+        return !isValid.contains(false);
     }
 
     public void shape(Map<?, ? extends BaseSchema> schema) {

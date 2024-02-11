@@ -14,11 +14,10 @@ public class NumberSchema extends BaseSchema<Number> {
             return isValid;
         }
         if (object == null) {
-            return !isValid;
+            return false;
         }
         if (this.isPositive) {
-            int temp = Long.compare(object.longValue(), 0);
-            isValid = temp <= 0 ? !isValid : isValid;
+            isValid = (object.longValue() <= 0) != isValid;
         }
         if (this.hasRange) {
             isValid = range.contains(object.longValue());
