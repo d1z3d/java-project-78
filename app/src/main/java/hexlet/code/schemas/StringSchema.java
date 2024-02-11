@@ -4,23 +4,23 @@ public class StringSchema extends BaseSchema<String> {
     private String pattern = "";
     @Override
     public boolean isValid(String object) {
-        boolean result = true;
+        boolean isValid = true;
         if (this.isRequired) {
             if (object == null) {
-                return false;
+                return !isValid;
             }
 
             if (!object.isEmpty()) {
-                result = this.minLength <= object.length();
+                isValid = this.minLength <= object.length();
             } else {
-                result = false;
+                isValid = !isValid;
             }
 
             if (object.isEmpty() || !object.contains(this.pattern)) {
-                result = false;
+                isValid = !isValid;
             }
         }
-        return result;
+        return isValid;
     }
 
 

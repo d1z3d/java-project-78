@@ -1,6 +1,5 @@
 import hexlet.code.Validator;
 import hexlet.code.schemas.BaseSchema;
-import hexlet.code.schemas.MapSchema;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -15,21 +14,34 @@ public class MapSchemaTest {
     public void isValidTest() {
         var v = new Validator();
         var schema = v.map();
-        Map<String, BaseSchema<String>> schemas = new HashMap<>();
-        schemas.put("firstName", v.string().required());
-        schemas.put("lastName", v.string().required().minLength(2));
-        schema.shape(schemas);
-        Map<String, Object> human1 = new HashMap<>();
-        human1.put("firstName", "John");
+        Map<String, BaseSchema<String>> stringSchema = new HashMap<>();
+        stringSchema.put("firstName", v.string().contains("t").required());
+        stringSchema.put("lastName", v.string().required().minLength(2));
+        schema.shape(stringSchema);
+        Map<String, String> human1 = new HashMap<>();
+        human1.put("firstName", "Johnathan");
         human1.put("lastName", "Smith");
         assertTrue(schema.isValid(human1));
-        Map<String, Object> human2 = new HashMap<>();
-        human2.put("firstName", "John");
+        Map<String, String> human2 = new HashMap<>();
+        human2.put("firstName", "Johnathan");
         human2.put("lastName", null);
         assertFalse(schema.isValid(human2));
-        Map<String, Object> human3 = new HashMap<>();
-        human3.put("firstName", "Anna");
+        Map<String, String> human3 = new HashMap<>();
+        human3.put("firstName", "Annet");
         human3.put("lastName", "B");
         assertFalse(schema.isValid(human3));
+
+        Map<String, BaseSchema<Number>> numberSchema = new HashMap<>();
+        numberSchema.put("age", v.number().positive().required());
+        numberSchema.put("hours", v.number().range(12, 18).required().minLength(2));
+        schema.shape(numberSchema);
+        Map<String, Number> person1 = new HashMap<>();
+        person1.put("age", 12);
+        person1.put("hours", 15);
+        assertTrue(schema.isValid(person1));
+        Map<String, Number> person2 = new HashMap<>();
+        person2.put("age", -12);
+        person2.put("hours", null);
+        assertFalse(schema.isValid(person2));
     }
 }
