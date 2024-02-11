@@ -12,6 +12,12 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
 
     @Override
     public boolean isValid(Map<?, ?> object) {
+        if (!this.isRequired) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
         if (this.hasSize && schemas.size() != this.size) {
             return false;
         }
