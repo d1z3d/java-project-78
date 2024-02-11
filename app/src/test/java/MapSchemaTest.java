@@ -16,7 +16,7 @@ public class MapSchemaTest {
         var schema = v.map();
         Map<String, BaseSchema<String>> stringSchema = new HashMap<>();
         stringSchema.put("firstName", v.string().contains("t").required());
-        stringSchema.put("lastName", v.string().required().minLength(2));
+        stringSchema.put("lastName", v.string().minLength(2).required());
         schema.shape(stringSchema);
         Map<String, String> human1 = new HashMap<>();
         human1.put("firstName", "Johnathan");
@@ -33,7 +33,7 @@ public class MapSchemaTest {
 
         Map<String, BaseSchema<Number>> numberSchema = new HashMap<>();
         numberSchema.put("age", v.number().positive().required());
-        numberSchema.put("hours", v.number().range(12, 18).required().minLength(2));
+        numberSchema.put("hours", v.number().range(12, 18).required());
         schema.shape(numberSchema);
         Map<String, Number> person1 = new HashMap<>();
         person1.put("age", 12);
