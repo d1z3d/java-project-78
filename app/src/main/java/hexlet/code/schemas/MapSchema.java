@@ -45,7 +45,7 @@ public class MapSchema extends BaseSchema<Map<String, ?>> {
         return isValid;
     }
 
-    public void shape(Map<String, BaseSchema<?>> schema) {
+    public <T> void shape(Map<String, BaseSchema<T>> schema) {
         this.schemas = new HashMap<>(schema);
     }
 
