@@ -1,10 +1,8 @@
 package hexlet.code.schemas;
 
 public class StringSchema extends BaseSchema<String> {
-    private String pattern;
-    private boolean checkContains;
-    protected boolean hasMinLength;
-    protected int minLength;
+    private boolean hasMinLength;
+    private int minLength;
 
     @Override
     public boolean isValid(String object) {
@@ -25,12 +23,6 @@ public class StringSchema extends BaseSchema<String> {
         return isValid;
     }
 
-
-    public StringSchema contains(String value) {
-        this.pattern = value;
-        this.checkContains = true;
-        return this;
-    }
     public StringSchema minLength(int length) {
         this.hasMinLength = true;
         this.minLength = length;
