@@ -13,7 +13,7 @@ public class MapSchemaTest {
     @Test
     public void isValidTest() {
         var v = new Validator();
-        var schema = v.map();
+        var schema = v.map().sizeOf(2);
         Map<String, BaseSchema<String>> stringSchema = new HashMap<>();
         stringSchema.put("firstName", v.string().contains("t").required());
         stringSchema.put("lastName", v.string().minLength(2).required());
@@ -43,5 +43,15 @@ public class MapSchemaTest {
         person2.put("age", -12);
         person2.put("hours", null);
         assertFalse(schema.isValid(person2));
+
+        schema = v.map().sizeOf(3);
+        stringSchema.clear();
+        stringSchema.put("firstName", v.string().contains("t").required());
+        stringSchema.put("lastName", v.string().minLength(2).required());
+        schema.shape(stringSchema);
+        Map<String, String> person3 = new HashMap<>();
+        person3.put("firstName", "Johnathan");
+        person3.put("lastName", "Smith");
+        assertFalse(schema.isValid(person3));
     }
 }

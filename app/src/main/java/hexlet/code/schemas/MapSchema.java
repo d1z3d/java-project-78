@@ -7,9 +7,14 @@ import java.util.Map;
 
 public class MapSchema extends BaseSchema<Map<?, ?>> {
     private Map<?, ?> schemas = new HashMap<>();
+    private boolean hasSize;
+    private int length;
 
     @Override
     public boolean isValid(Map<?, ?> object) {
+        if (this.hasSize && schemas.size() != length) {
+            return false;
+        }
         List<Boolean> isValid = new ArrayList<>();
         object.forEach((key, value) -> {
             if (schemas.containsKey(key)) {
@@ -29,5 +34,10 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
 
     public void shape(Map<?, ? extends BaseSchema> schema) {
         this.schemas = new HashMap<>(schema);
+    }
+    public MapSchema sizeOf(int size) {
+        this.hasSize = true;
+        this.length = size;
+        return this;
     }
 }
