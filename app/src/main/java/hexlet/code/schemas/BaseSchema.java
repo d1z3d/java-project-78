@@ -8,7 +8,7 @@ public abstract class BaseSchema<T> {
     protected boolean isRequired;
     protected Map<String, Predicate<T>> strategies = new LinkedHashMap<>();
 
-    public boolean isValid(T object) {
+    public final boolean isValid(T object) {
         if (object == null) {
             return !isRequired;
         }
@@ -22,10 +22,7 @@ public abstract class BaseSchema<T> {
         return true;
     }
 
-    public BaseSchema required() {
-        this.isRequired = true;
-        return this;
-    }
+    public abstract BaseSchema required();
     public final void addStrategy(String name, Predicate<T> strategy) {
         strategies.put(name, strategy);
     }

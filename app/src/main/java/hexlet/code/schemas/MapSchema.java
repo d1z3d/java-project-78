@@ -4,9 +4,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class MapSchema extends BaseSchema<Map<String, ?>> {
+public final class MapSchema extends BaseSchema<Map<String, ?>> {
     public MapSchema() {
         addStrategy("isMapClass", isMapClass());
+    }
+
+    @Override
+    public MapSchema required() {
+        super.isRequired = true;
+        return this;
     }
 
     public MapSchema sizeof(int size) {
