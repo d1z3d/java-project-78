@@ -8,7 +8,7 @@ public class StringSchema extends BaseSchema<String> {
     }
 
     @Override
-    public BaseSchema required() {
+    public StringSchema required() {
         super.isRequired = true;
         addStrategy("isRequired", isRequired());
         return this;
