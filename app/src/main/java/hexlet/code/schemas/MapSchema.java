@@ -1,60 +1,44 @@
 package hexlet.code.schemas;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 public class MapSchema extends BaseSchema<Map<String, ?>> {
-    private Map<String, BaseSchema<?>> schemas = new HashMap<>();
-    private boolean hasSize;
-    private int size;
-
-    @Override
-    public boolean isValid(Map<String, ?> object) {
-        for (var schema : schemas.entrySet()) {
-            if (!schema.getValue().isRequired) {
-                return true;
-            }
-        }
-        return validateSchema(object);
+    public MapSchema() {
+        addStrategy("isMapClass", isMapClass());
     }
 
-    @Override
-    public boolean validateSchema(Map<String, ?> data) {
-        if (data == null) {
-            return false;
-        }
-        if (this.hasSize && schemas.size() != this.size) {
-            return false;
-        }
-        boolean isValid = true;
-        for (var entry: data.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            if (value == null) {
-                return false;
-            }
-            if (schemas.containsKey(key)) {
-                var schema = schemas.get(key);
-                Class<?> base = schema.getClass();
-                if (base.toString().contains("String")) {
-                    isValid = ((BaseSchema<String>) schema).isValid((String) value);
-                } else if (base.toString().contains("Number")) {
-                    isValid = ((BaseSchema<Number>) schema).isValid((Number) value);
-                } else {
+    public MapSchema sizeof(int size) {
+        addStrategy("isSameSize", isSameSize(size));
+        return this;
+    }
+
+    private Predicate<Map<String, ?>> isMapClass() {
+        return Objects::nonNull;
+    }
+
+
+    private Predicate<Map<String, ?>> isSameSize(int size) {
+        return p -> p.size() == size;
+    }
+
+    public <T> MapSchema shape(Map<String, BaseSchema<T>> schema) {
+        addStrategy("isShape", isShape(schema));
+        return this;
+    }
+
+    private <T> Predicate<Map<String, ?>> isShape(Map<String, BaseSchema<T>> schemas) {
+        return p -> {
+            for (var schema : schemas.entrySet()) {
+                String key = schema.getKey();
+                Object value = p.get(key);
+
+                if (!schema.getValue().isValid((T) value)) {
                     return false;
                 }
             }
-        }
-        return isValid;
-    }
-
-    public <T> void shape(Map<String, BaseSchema<T>> schema) {
-        this.schemas = new HashMap<>(schema);
-    }
-
-    public MapSchema sizeof(int length) {
-        this.hasSize = true;
-        this.size = length;
-        return this;
+            return true;
+        };
     }
 }

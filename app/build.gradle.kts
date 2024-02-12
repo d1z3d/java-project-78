@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    application
+    java
     jacoco
     id("checkstyle")
 }
@@ -10,9 +10,6 @@ plugins {
 group = "hexlet.code"
 version = "1.0-SNAPSHOT"
 
-application {
-    mainClass.set("hexlet.code.App")
-}
 
 repositories {
     mavenCentral()
@@ -26,7 +23,6 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:" + lombok_version)
     testAnnotationProcessor("org.projectlombok:lombok:" + lombok_version)
 
-    implementation("org.apache.commons:commons-lang3:3.0")
     testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 }

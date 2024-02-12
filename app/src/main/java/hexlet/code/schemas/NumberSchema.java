@@ -1,32 +1,30 @@
 package hexlet.code.schemas;
 
-import org.apache.commons.lang3.Range;
+import java.util.function.Predicate;
 
 public class NumberSchema extends BaseSchema<Number> {
-    private boolean isPositive;
-    private Range<Long> range;
-    private boolean hasRange;
-
-    @Override
-    public boolean validateSchema(Number data) {
-        boolean isValid = true;
-        if (this.isPositive) {
-            isValid = (data.longValue() <= 0) != isValid;
-        }
-        if (this.hasRange) {
-            isValid = range.contains(data.longValue());
-        }
-        return isValid;
+    public NumberSchema() {
+        addStrategy("isNumberClass", isNumberClass());
     }
 
-    public NumberSchema range(long from, long includeTo) {
-        this.hasRange = true;
-        this.range = Range.between(from, includeTo);
+    public NumberSchema range(int from, int includeTo) {
+        addStrategy("isBetweenRange", isBetweenRange(from, includeTo));
         return this;
     }
 
     public NumberSchema positive() {
-        isPositive = true;
+        addStrategy("isPositive", isPositive());
         return this;
+    }
+
+    private Predicate<Number> isNumberClass() {
+        return p -> true;
+    }
+
+    private Predicate<Number> isPositive() {
+        return p -> p.intValue() > 0;
+    }
+    private Predicate<Number> isBetweenRange(int from, int includeTo) {
+        return p -> (p.intValue() >= from && p.intValue() <= includeTo);
     }
 }
