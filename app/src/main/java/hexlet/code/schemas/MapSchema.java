@@ -5,10 +5,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public final class MapSchema extends BaseSchema<Map<String, ?>> {
-    public MapSchema() {
-        addStrategy("isMapClass", isMapClass());
-    }
-
     @Override
     public MapSchema required() {
         super.isRequired = true;
